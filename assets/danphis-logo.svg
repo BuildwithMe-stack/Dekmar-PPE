@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 560 160" role="img" aria-labelledby="title desc">
+  <title id="title">Danphis Enterprises PPE Distribution</title>
+  <desc id="desc">Danphis Enterprises PPE Distribution logo with a protective equipment D icon and the tagline Protecting People, Powering Safety.</desc>
+  <g transform="translate(16 14)">
+    <path d="M6 2h70c38 0 69 29 69 64s-31 64-69 64H6V2Z" fill="#ffffff"/>
+    <path d="M9 6h56v22H31v96H9V6Z" fill="#0D1F3D"/>
+    <path d="M74 6c36 0 65 27 65 60s-29 60-65 60H58v-22h16c23 0 42-16 42-38S97 28 74 28H58V6h16Z" fill="#FF6A00"/>
+    <path d="M54 58c2-17 14-30 31-30s29 13 31 30H54Z" fill="#0D1F3D"/>
+    <path d="M84 29v29M68 42c7-7 26-7 34 0" stroke="#ffffff" stroke-width="5" stroke-linecap="round"/>
+    <path d="M48 63h75" stroke="#0D1F3D" stroke-width="8" stroke-linecap="round"/>
+    <path d="M58 73h52c5 0 9 4 9 9v10c0 5-4 9-9 9H58c-5 0-9-4-9-9V82c0-5 4-9 9-9Z" fill="#ffffff" stroke="#FF6A00" stroke-width="7"/>
+    <path d="M60 103c7 2 12 7 16 14 2 4 6 7 10 7s8-3 10-7c4-7 9-12 16-14 0 19-12 31-26 31s-26-12-26-31Z" fill="#0D1F3D"/>
+    <path d="M67 102c6 5 12 8 19 8s13-3 19-8" fill="none" stroke="#ffffff" stroke-width="4" stroke-linecap="round"/>
+  </g>
+  <g transform="translate(180 24)">
+    <text x="0" y="44" fill="#0D1F3D" font-family="Arial Black, Arial, Helvetica, sans-serif" font-size="48" font-weight="900">DANPHIS</text>
+    <text x="2" y="78" fill="#FF6A00" font-family="Arial, Helvetica, sans-serif" font-size="24" font-weight="800" letter-spacing="9">ENTERPRISES</text>
+    <path d="M0 104h92M314 104h92" stroke="#0D1F3D" stroke-width="3"/>
+    <text x="112" y="112" fill="#0D1F3D" font-family="Arial, Helvetica, sans-serif" font-size="21" font-weight="900">PPE DISTRIBUTION</text>
+    <text x="0" y="140" fill="#6B7280" font-family="Arial, Helvetica, sans-serif" font-size="16" font-weight="800">PROTECTING PEOPLE.</text>
+    <text x="196" y="140" fill="#FF6A00" font-family="Arial, Helvetica, sans-serif" font-size="16" font-weight="900">POWERING SAFETY.</text>
+  </g>
+</svg>
