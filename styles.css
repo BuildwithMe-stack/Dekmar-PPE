@@ -2063,8 +2063,9 @@ p {
 .hospital-category-card img {
   width: 7rem;
   height: 7rem;
-  object-fit: cover;
-  background: var(--light-2);
+  object-fit: contain;
+  padding: 0.35rem;
+  background: var(--white);
 }
 
 .hospital-category-card div {
@@ -2207,7 +2208,7 @@ p {
     grid-template-columns: 6.5rem 1fr;
   }
 
-  .hospital-category-card img {
+.hospital-category-card img {
     width: 6.5rem;
     height: 6.5rem;
   }
