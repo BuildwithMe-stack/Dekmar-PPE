@@ -17,13 +17,13 @@ const assets = {
 };
 
 const rates = {
-  AUD: 1,
-  USD: 0.66,
-  KES: 86
+  KSH: 129,
+  USD: 1,
+  EUR: 0.92
 };
 
 const state = {
-  currency: "AUD",
+  currency: "KSH",
   view: "grid",
   cart: []
 };
@@ -307,10 +307,13 @@ const products = [
 
 function formatMoney(value) {
   const amount = value * rates[state.currency];
-  return new Intl.NumberFormat("en-US", {
+  if (state.currency === "KSH") {
+    return `KSh ${new Intl.NumberFormat("en-KE", { maximumFractionDigits: 0 }).format(amount)}`;
+  }
+  return new Intl.NumberFormat(state.currency === "EUR" ? "en-IE" : "en-US", {
     style: "currency",
     currency: state.currency,
-    maximumFractionDigits: state.currency === "KES" ? 0 : 2
+    maximumFractionDigits: 2
   }).format(amount);
 }
 
@@ -639,8 +642,8 @@ function injectStructuredData() {
         category: product.category,
         offers: {
           "@type": "Offer",
-          priceCurrency: "AUD",
-          price: product.price,
+          priceCurrency: "KES",
+          price: Math.round(product.price * rates.KSH),
           availability: product.availability === "Low stock" ? "https://schema.org/LimitedAvailability" : "https://schema.org/InStock"
         }
       }
