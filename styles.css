@@ -201,8 +201,9 @@ svg {
 }
 
 .brand img {
-  width: 15rem;
+  width: 11.6rem;
   height: auto;
+  object-fit: contain;
 }
 
 .desktop-nav {
@@ -1231,6 +1232,8 @@ p {
   gap: 0.65rem;
   color: var(--navy);
   font-weight: 850;
+  min-width: 0;
+  overflow-wrap: anywhere;
 }
 
 .contact-list svg {
@@ -1688,6 +1691,8 @@ p {
 
 .mobile-panel-header img {
   width: 12rem;
+  max-height: 3rem;
+  object-fit: contain;
 }
 
 .mobile-panel nav {
@@ -1720,7 +1725,8 @@ p {
 }
 
 .footer-grid img {
-  width: 13rem;
+  width: 12.2rem;
+  object-fit: contain;
   background: var(--white);
   border-radius: var(--radius-sm);
 }
@@ -1734,6 +1740,18 @@ p {
 .footer-grid a {
   display: block;
   padding-block: 0.18rem;
+}
+
+.footer-contact {
+  display: grid;
+  gap: 0.15rem;
+  margin-top: 0.9rem;
+  font-size: 0.9rem;
+}
+
+.footer-contact a {
+  color: rgba(255, 255, 255, 0.86);
+  overflow-wrap: anywhere;
 }
 
 .footer-bottom {
@@ -1815,7 +1833,7 @@ p {
 
 @media (max-width: 1320px) {
   .brand img {
-    width: 14rem;
+    width: 11rem;
   }
 
   .desktop-nav {
@@ -1847,13 +1865,23 @@ p {
     justify-content: center;
   }
 
+  .utility-links {
+    width: 100%;
+    justify-content: space-between;
+    gap: 0.55rem;
+  }
+
+  .utility-links a:not(.utility-phone) {
+    display: none;
+  }
+
   .utility-inner > span,
   .mega-band {
     display: none;
   }
 
   .brand img {
-    width: 12.2rem;
+    width: 9.8rem;
   }
 
   .header-actions {
@@ -2043,6 +2071,63 @@ p {
   object-position: top center;
 }
 
+.contact-strip {
+  border-block: 1px solid var(--line);
+  background: var(--white);
+}
+
+.contact-strip-inner {
+  display: grid;
+  grid-template-columns: minmax(12rem, 1.1fr) repeat(3, minmax(0, 1fr));
+  gap: 0.9rem;
+  align-items: center;
+  padding-block: 0.85rem;
+}
+
+.contact-strip-logo {
+  display: flex;
+  align-items: center;
+}
+
+.contact-strip-logo img {
+  width: 12.2rem;
+  max-height: 3.2rem;
+  object-fit: contain;
+}
+
+.contact-strip-item {
+  min-height: 4rem;
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  padding: 0.7rem 0.85rem;
+  border-left: 1px solid var(--line);
+  color: var(--text);
+  font-size: 0.9rem;
+  line-height: 1.35;
+}
+
+.contact-strip-item svg {
+  width: 1.35rem;
+  height: 1.35rem;
+  color: var(--orange);
+}
+
+.contact-strip-item span {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.contact-strip-item strong {
+  display: block;
+  margin-bottom: 0.15rem;
+  color: var(--navy);
+  font-size: 0.78rem;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 0;
+}
+
 .compact-category-grid {
   grid-template-columns: repeat(4, 1fr);
 }
@@ -2178,6 +2263,19 @@ p {
     grid-template-columns: 1fr;
   }
 
+  .contact-strip-inner {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .contact-strip-logo {
+    grid-column: 1 / -1;
+  }
+
+  .contact-strip-item {
+    border-left: 0;
+    border-top: 1px solid var(--line);
+  }
+
   .compact-category-grid,
   .department-grid,
   .steps-grid,
@@ -2195,6 +2293,21 @@ p {
     font-size: 2.55rem;
   }
 
+  .contact-strip-inner {
+    grid-template-columns: 1fr;
+    gap: 0.25rem;
+    padding-block: 0.7rem;
+  }
+
+  .contact-strip-logo img {
+    width: 11.4rem;
+  }
+
+  .contact-strip-item {
+    min-height: 0;
+    padding: 0.7rem 0;
+  }
+
   .compact-category-grid,
   .department-grid,
   .steps-grid,
@@ -2208,7 +2321,7 @@ p {
     grid-template-columns: 6.5rem 1fr;
   }
 
-.hospital-category-card img {
+  .hospital-category-card img {
     width: 6.5rem;
     height: 6.5rem;
   }
