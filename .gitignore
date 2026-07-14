@@ -1,4 +1,5 @@
 assets/*.png
+!assets/techbykennedy-logo.png
 assets/products/*.png
 assets/danphis-brand-board.jpg
 assets/dekmar-hospital*.jpg

@@ -1780,6 +1780,23 @@ p {
   color: var(--white);
 }
 
+.footer-managed-brand {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.55rem;
+}
+
+.footer-managed-brand img {
+  width: 2.4rem;
+  height: 2.4rem;
+  object-fit: contain;
+  padding: 0.12rem;
+  border-radius: 50%;
+  background: var(--white);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.18);
+}
+
 .footer-managed a {
   color: rgba(255, 255, 255, 0.86);
   overflow-wrap: anywhere;
