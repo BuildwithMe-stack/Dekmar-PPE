@@ -2,12 +2,18 @@ const $ = (selector, scope = document) => scope.querySelector(selector);
 const $$ = (selector, scope = document) => Array.from(scope.querySelectorAll(selector));
 
 const assets = {
-  gloves: "assets/products/gloves.jpg",
-  respirator: "assets/products/respirator.jpg",
-  boots: "assets/products/boots.jpg",
-  headEye: "assets/products/head-eye.jpg",
-  hivis: "assets/products/hivis.jpg",
-  hero: "assets/danphis-ppe-hero.jpg"
+  head: "assets/hospital-head.jpg",
+  face: "assets/hospital-face.jpg",
+  eye: "assets/hospital-eye.jpg",
+  hand: "assets/hospital-hand.jpg",
+  gown: "assets/hospital-gown.jpg",
+  respirator: "assets/hospital-respirator.jpg",
+  foot: "assets/hospital-foot.jpg",
+  body: "assets/hospital-body.jpg",
+  patient: "assets/hospital-patient.jpg",
+  disposables: "assets/hospital-disposables.jpg",
+  infection: "assets/hospital-infection.jpg",
+  waste: "assets/hospital-waste.jpg"
 };
 
 const rates = {
@@ -19,669 +25,283 @@ const rates = {
 const state = {
   currency: "AUD",
   view: "grid",
-  cart: [],
-  wishlist: new Set(),
-  compare: new Set(),
-  recentlyViewed: [],
-  heroIndex: 0
+  cart: []
 };
 
-const heroSlides = [
-  {
-    eyebrow: "Premium PPE Distribution",
-    title: "Safety equipment built for demanding work.",
-    body: "Danphis Enterprises Ltd supplies certified PPE for construction, mining, healthcare, manufacturing, logistics, and public-sector procurement."
-  },
-  {
-    eyebrow: "Hand Protection",
-    title: "Gloves matched to chemicals, cuts, grip, and dexterity.",
-    body: "Select from nitrile, PVC, coated, heat-resistant, cut-rated, and disposable gloves with structured standards data."
-  },
-  {
-    eyebrow: "Respiratory Protection",
-    title: "Respirators for dust, fumes, vapours, and site exposure.",
-    body: "Compare cartridges, fit guidance, storage requirements, and compliance information before procurement."
-  },
-  {
-    eyebrow: "Safety Footwear",
-    title: "Industrial boots for impact, slip, water, heat, and electrical risk.",
-    body: "Choose footwear by standard, sole rating, toe protection, industry, and worksite conditions."
-  },
-  {
-    eyebrow: "Protective Clothing",
-    title: "High-visibility workwear for road, rail, warehouse, and night operations.",
-    body: "Build compliant kits with jackets, coveralls, disposable PPE, and weather-ready protective clothing."
-  }
-];
-
 const categories = [
-  ["Hand Protection", "Cut, chemical, thermal, grip, and disposable gloves", "icon-shield"],
-  ["Eye Protection", "Safety glasses, goggles, splash protection", "icon-shield"],
-  ["Respiratory Protection", "Masks, cartridges, respirators, fit kits", "icon-shield"],
-  ["Hearing Protection", "Ear plugs, defenders, communications", "icon-shield"],
-  ["Protective Clothing", "Hi-vis, coveralls, chemical suits", "icon-shield"],
-  ["Safety Footwear", "S1P, S3, EH, waterproof and slip-rated boots", "icon-shield"],
-  ["Fall Protection", "Harnesses, lanyards, anchors, rescue kits", "icon-shield"],
-  ["Head Protection", "Hard hats, bump caps, accessories", "icon-shield"],
-  ["Face Shields", "Grinding, chemical splash, heat and arc options", "icon-shield"],
-  ["Chemical Protection", "Gloves, goggles, suits, spill response", "icon-shield"],
-  ["Disposable PPE", "Masks, gowns, caps, shoe covers", "icon-shield"],
-  ["Emergency Equipment", "First aid, eyewash, rescue, site response", "icon-shield"]
+  ["Head Protection", "Bouffant caps, surgical caps, head covers", assets.head],
+  ["Face Protection", "Face shields, masks, procedure masks", assets.face],
+  ["Eye Protection", "Safety goggles, protective glasses, visors", assets.eye],
+  ["Hand Protection", "Latex, nitrile, vinyl, and sterile gloves", assets.hand],
+  ["Gowns & Aprons", "Surgical gowns, isolation gowns, aprons", assets.gown],
+  ["Respiratory Protection", "N95 respirators, masks, cartridges", assets.respirator],
+  ["Foot Protection", "Shoe covers, boot covers, non-slip shoes", assets.foot],
+  ["Waste Management", "Biohazard bags, sharps bins, waste bins", assets.waste]
 ];
 
-const industries = [
-  ["Construction", "Impact, dust, height, noise, visibility", ["Hard hats", "Cut gloves", "S3 boots"]],
-  ["Mining", "Respirable dust, impact, heat, visibility", ["P3 respiratory", "Hi-vis clothing", "Hearing protection"]],
-  ["Manufacturing", "Cut, abrasion, chemicals, machine hazards", ["Cut gloves", "Eye protection", "Safety footwear"]],
-  ["Oil & Gas", "Flame, chemicals, confined spaces, respiratory risk", ["FR clothing", "Respirators", "Chemical gloves"]],
-  ["Healthcare", "Disposable PPE, splash, infection control", ["Nitrile gloves", "Masks", "Face shields"]],
-  ["Warehousing", "Foot protection, visibility, manual handling", ["Safety boots", "Hi-vis", "Grip gloves"]],
-  ["Transport", "Roadside visibility, weather, first response", ["Hi-vis jackets", "Road safety", "First aid"]],
-  ["Food Processing", "Hygiene, cut, liquid, low-temperature work", ["Disposable PPE", "Cut gloves", "Waterproof boots"]],
-  ["Government", "Standardized supply, tenders, documentation", ["Procurement bundles", "Certificates", "Repeat carts"]]
-];
-
-const brands = [
-  ["Ansell", "Hand and body protection category coverage"],
-  ["Honeywell", "Industrial safety and respiratory solutions"],
-  ["3M", "Respiratory, hearing, eyewear, and site PPE"],
-  ["Uvex", "Eye, hearing, head, and footwear protection"],
-  ["Bata Industrials", "Industrial footwear"],
-  ["Delta Plus", "Broad PPE catalogue"],
-  ["Portwest", "Workwear and high-visibility clothing"],
-  ["JSP", "Head, face, and respiratory safety"],
-  ["Drager", "Respiratory and gas detection"],
-  ["MSA", "Head, fall, and respiratory protection"]
+const departments = [
+  ["Wards", "Daily masks, gloves, patient gowns, bed sheets"],
+  ["Surgery & Theatre", "Sterile gowns, drapes, masks, face shields"],
+  ["ICU & Critical Care", "Respirators, suction kits, critical-care PPE"],
+  ["Laboratory", "Lab coats, gloves, goggles, sleeve protectors"],
+  ["Dental", "Dental masks, face shields, gloves, bibs"],
+  ["Maternity & NICU", "Delivery kits, baby wraps, maternity pads"],
+  ["Infection Control", "Sanitizers, disinfectants, wipes, sprayers"],
+  ["Admin & Visitors", "Visitor coats, ID holders, general supplies"]
 ];
 
 const products = [
   {
-    id: "DP-GLO-CHEM-410",
-    name: "AcidShield 410 Chemical Glove",
-    brand: "Danphis Select",
-    model: "AS-410",
-    category: "Hand Protection",
-    image: assets.gloves,
-    price: 34,
-    rating: 4.8,
-    popularity: 97,
-    newest: 9,
-    inventory: 428,
-    availability: "In stock",
-    summary: "Extended cuff nitrile/PVC glove for acids, caustics, oils, and wet handling.",
-    industries: ["Mining", "Manufacturing", "Oil & Gas", "Food Processing"],
-    hazards: ["Acid splash", "Caustics", "Abrasion", "Wet grip"],
-    standards: ["EN 374", "EN 388", "ISO 21420"],
-    protectionLevel: "Chemical Level 4",
-    colour: "Teal",
-    sizes: ["S", "M", "L", "XL", "2XL"],
-    material: "Nitrile/PVC blend",
-    weight: "160 g",
-    packaging: "12 pairs per bag, 72 pairs per carton",
-    certification: "EN 374 Type A, EN 388 4121X",
-    hazardRating: "Chemical splash, abrasion medium",
-    chemicalResistance: "Acids, alkalis, hydrocarbons",
-    heatResistance: "Contact heat 100 C short duration",
-    cutResistance: "EN 388 level 1",
-    electricalRating: "Not electrically rated",
-    waterproofRating: "Liquidproof coating",
-    uvProtection: "Not applicable",
-    enStandards: "EN 374, EN 388, ISO 21420",
-    ansiStandards: "ANSI abrasion 3",
-    isoStandards: "ISO 21420",
-    applications: ["Chemical handling", "Washdown", "Mining maintenance", "Fuel handling"],
-    features: ["Textured palm", "Extended cuff", "Liquid barrier", "Reusable construction"],
-    benefits: ["Confident wet grip", "Broad chemical coverage", "Reduced cuff ingress"],
-    shelfLife: "5 years unopened",
-    storage: "Store cool, dry, away from sunlight and ozone",
-    cleaning: "Rinse after use and air dry before storage",
-    country: "Malaysia",
-    manufacturer: "Danphis Select",
-    warranty: "12 months against manufacturing defects",
-    pros: "Broad chemical resistance, durable, strong wet grip",
-    cons: "Lower cut rating than dedicated cut gloves",
-    related: ["DP-EYE-GOG-220", "DP-CLO-FR-730", "DP-RESP-HF-620"],
-    accessories: ["Chemical splash goggles", "Disposable sleeve protectors"],
-    boughtTogether: ["DP-EYE-GOG-220", "DP-CLO-FR-730"]
-  },
-  {
-    id: "DP-GLO-CUT-A5",
-    name: "CutGuard A5 Nitrile Grip Glove",
-    brand: "Danphis Select",
-    model: "CG-A5",
-    category: "Hand Protection",
-    image: assets.gloves,
-    price: 22,
+    id: "DKM-HEAD-100",
+    name: "Disposable Bouffant Caps",
+    category: "Head Protection",
+    department: "Wards",
+    image: assets.head,
+    price: 18,
     rating: 4.7,
-    popularity: 93,
+    popularity: 92,
     newest: 6,
-    inventory: 680,
+    inventory: 1200,
     availability: "In stock",
-    summary: "High-dexterity coated glove for sharp edges, assembly, and general fabrication.",
-    industries: ["Construction", "Manufacturing", "Warehousing"],
-    hazards: ["Cut", "Abrasion", "Oil grip"],
-    standards: ["EN 388", "ANSI A5", "ISO 21420"],
-    protectionLevel: "Cut A5",
-    colour: "Grey/Black",
-    sizes: ["XS", "S", "M", "L", "XL", "2XL"],
-    material: "HPPE blend with nitrile palm",
-    weight: "72 g",
-    packaging: "12 pairs per bag, 120 pairs per carton",
-    certification: "EN 388 4X42E, ANSI A5",
-    hazardRating: "Cut high, abrasion high",
-    chemicalResistance: "Limited oil contact only",
-    heatResistance: "Not heat rated",
-    cutResistance: "ANSI A5, EN E",
-    electricalRating: "Not electrically rated",
-    waterproofRating: "Palm coating only",
-    uvProtection: "Not applicable",
-    enStandards: "EN 388, ISO 21420",
-    ansiStandards: "ANSI/ISEA 105 A5",
-    isoStandards: "ISO 21420",
-    applications: ["Metal handling", "Glass handling", "Assembly", "Maintenance"],
-    features: ["Seamless liner", "Nitrile microfoam palm", "Reinforced thumb crotch"],
-    benefits: ["High cut protection", "Good dexterity", "Breathable back"],
-    shelfLife: "5 years unopened",
-    storage: "Store dry and away from direct heat",
-    cleaning: "Wash at low temperature, air dry",
-    country: "Vietnam",
-    manufacturer: "Danphis Select",
-    warranty: "12 months against manufacturing defects",
-    pros: "Strong dexterity, high cut protection, good abrasion life",
-    cons: "Not intended for liquid immersion",
-    related: ["DP-FOOT-S3-900", "DP-EYE-GOG-220"],
-    accessories: ["Glove clips", "Cut risk signage"],
-    boughtTogether: ["DP-FOOT-S3-900", "DP-EYE-GOG-220"]
+    protection: "Hair containment",
+    sizes: ["Universal"],
+    pack: "100 caps per pack",
+    standards: ["Hospital hygiene"],
+    summary: "Lightweight blue bouffant caps for wards, theatre preparation, labs, and visitors.",
+    uses: ["Wards", "Theatre prep", "Laboratory", "Visitors"],
+    features: ["Soft elastic edge", "Breathable material", "Single-use hygiene"],
+    guidance: "Use when hair coverage is required before entering clinical or clean areas."
   },
   {
-    id: "DP-RESP-HF-620",
-    name: "AirSeal 620 Half-Face Respirator",
-    brand: "Danphis Select",
-    model: "AS-620",
-    category: "Respiratory Protection",
-    image: assets.respirator,
-    price: 96,
-    rating: 4.9,
-    popularity: 98,
-    newest: 10,
-    inventory: 164,
-    availability: "In stock",
-    summary: "Reusable half-face respirator with replaceable particulate and gas filter options.",
-    industries: ["Mining", "Construction", "Oil & Gas", "Manufacturing"],
-    hazards: ["Dust", "Fumes", "Organic vapours", "Welding fumes"],
-    standards: ["AS/NZS 1716", "EN 140", "NIOSH P100"],
-    protectionLevel: "P2/P3 compatible",
-    colour: "Navy/White",
-    sizes: ["S", "M", "L"],
-    material: "Medical-grade silicone",
-    weight: "138 g mask body",
-    packaging: "1 mask body, filters sold separately",
-    certification: "AS/NZS 1716, EN 140 compatible",
-    hazardRating: "Respirable dust and selected gases with correct cartridges",
-    chemicalResistance: "With approved organic vapour cartridges",
-    heatResistance: "Not for firefighting or oxygen-deficient atmospheres",
-    cutResistance: "Not applicable",
-    electricalRating: "Not electrically rated",
-    waterproofRating: "Washable mask body",
-    uvProtection: "Not applicable",
-    enStandards: "EN 140",
-    ansiStandards: "NIOSH P100 cartridge dependent",
-    isoStandards: "ISO 16975 guidance",
-    applications: ["Grinding", "Sanding", "Spraying", "Welding support with correct filters"],
-    features: ["Low-profile cartridges", "Soft face seal", "Drop-down harness", "Replaceable valves"],
-    benefits: ["Reusable value", "Comfortable fit", "Broad filter flexibility"],
-    shelfLife: "5 years for mask body, filter shelf life varies",
-    storage: "Store clean in sealed bag away from contaminants",
-    cleaning: "Remove filters, wash mask body with mild detergent, air dry",
-    country: "China",
-    manufacturer: "Danphis Select",
-    warranty: "12 months against manufacturing defects",
-    pros: "Flexible filter platform, strong face seal, reusable",
-    cons: "Requires correct fit test and cartridge selection",
-    related: ["DP-EYE-GOG-220", "DP-GLO-CHEM-410", "DP-HEAR-31"],
-    accessories: ["P3 particulate filters", "Organic vapour cartridges", "Fit test kit"],
-    boughtTogether: ["DP-EYE-GOG-220", "DP-HEAR-31"]
-  },
-  {
-    id: "DP-RESP-WLD-P3",
-    name: "WeldAir P3 Fume Respirator Kit",
-    brand: "Danphis Select",
-    model: "WA-P3",
-    category: "Respiratory Protection",
-    image: assets.respirator,
-    price: 132,
-    rating: 4.6,
-    popularity: 84,
-    newest: 8,
-    inventory: 41,
-    availability: "Low stock",
-    summary: "Compact P3 particulate kit for welding fume and high-dust fabrication tasks.",
-    industries: ["Manufacturing", "Construction", "Mining"],
-    hazards: ["Welding fumes", "Fine dust", "Metal particulates"],
-    standards: ["EN 140", "EN 143 P3", "AS/NZS 1716"],
-    protectionLevel: "P3",
-    colour: "Navy/White",
-    sizes: ["M", "L"],
-    material: "Silicone mask body, P3 filter media",
-    weight: "210 g with filters",
-    packaging: "1 mask, 2 P3 filters, storage bag",
-    certification: "P3 particulate kit",
-    hazardRating: "High particulate filtration",
-    chemicalResistance: "Not for gases unless fitted with gas cartridges",
-    heatResistance: "Not for oxygen-deficient environments",
-    cutResistance: "Not applicable",
-    electricalRating: "Not electrically rated",
-    waterproofRating: "Washable mask body",
-    uvProtection: "Not applicable",
-    enStandards: "EN 140, EN 143",
-    ansiStandards: "NIOSH particulate equivalent guidance",
-    isoStandards: "ISO 16975 guidance",
-    applications: ["Welding", "Grinding", "Metal fabrication", "Demolition dust"],
-    features: ["Low-profile filters", "Spark-resistant covers", "Storage pouch"],
-    benefits: ["Better clearance under shields", "Reusable mask platform"],
-    shelfLife: "5 years unopened for mask body",
-    storage: "Seal after use and replace filters per exposure plan",
-    cleaning: "Clean mask body only after removing filters",
-    country: "China",
-    manufacturer: "Danphis Select",
-    warranty: "12 months against manufacturing defects",
-    pros: "Strong particulate protection, works under many welding shields",
-    cons: "Not a gas or vapour solution without other cartridges",
-    related: ["DP-EYE-GOG-220", "DP-GLO-CUT-A5"],
-    accessories: ["Replacement P3 filters", "Spark filter covers"],
-    boughtTogether: ["DP-GLO-CUT-A5", "DP-HEAR-31"]
-  },
-  {
-    id: "DP-FOOT-S3-900",
-    name: "TerraGrip 900 S3 Safety Boot",
-    brand: "Bata Industrials",
-    model: "TG-900",
-    category: "Safety Footwear",
-    image: assets.boots,
-    price: 149,
+    id: "DKM-FACE-210",
+    name: "Clear Medical Face Shield",
+    category: "Face Protection",
+    department: "Surgery & Theatre",
+    image: assets.face,
+    price: 24,
     rating: 4.8,
     popularity: 95,
     newest: 7,
-    inventory: 236,
+    inventory: 460,
     availability: "In stock",
-    summary: "Water-resistant S3 boot with composite toe, anti-penetration midsole, and slip-resistant outsole.",
-    industries: ["Construction", "Warehousing", "Transport", "Manufacturing"],
-    hazards: ["Impact", "Slip", "Puncture", "Water"],
-    standards: ["EN ISO 20345 S3", "SRC", "ASTM F2413"],
-    protectionLevel: "S3 SRC",
-    colour: "Black",
-    sizes: ["6", "7", "8", "9", "10", "11", "12", "13"],
-    material: "Water-resistant leather, PU/rubber sole",
-    weight: "710 g per boot size 9",
-    packaging: "1 pair per box",
-    certification: "EN ISO 20345 S3 SRC",
-    hazardRating: "Impact, penetration, slip, water-resistant upper",
-    chemicalResistance: "Fuel oil resistant outsole",
-    heatResistance: "Outsole to 300 C short duration",
-    cutResistance: "Not applicable",
-    electricalRating: "Antistatic",
-    waterproofRating: "Water-resistant upper",
-    uvProtection: "Not applicable",
-    enStandards: "EN ISO 20345",
-    ansiStandards: "ASTM F2413 guidance",
-    isoStandards: "ISO 20345",
-    applications: ["Construction sites", "Warehouses", "Maintenance", "Transport yards"],
-    features: ["Composite toe", "Puncture-resistant midsole", "Slip-resistant outsole", "Padded ankle"],
-    benefits: ["Reduced fatigue", "No metal toe", "Reliable grip"],
-    shelfLife: "Use within 3 years of manufacture",
-    storage: "Store dry, away from heat and chemicals",
-    cleaning: "Brush dirt and wipe with damp cloth",
-    country: "Kenya",
-    manufacturer: "Bata Industrials",
-    warranty: "6 months against manufacturing defects",
-    pros: "Comfortable, strong slip rating, broad construction fit",
-    cons: "Not fully waterproof for immersion",
-    related: ["DP-GLO-CUT-A5", "DP-HIVIS-JKT-510"],
-    accessories: ["Gel insoles", "Boot care kit"],
-    boughtTogether: ["DP-HIVIS-JKT-510", "DP-GLO-CUT-A5"]
+    protection: "Splash protection",
+    sizes: ["Universal"],
+    pack: "10 shields per pack",
+    standards: ["EN 166 guidance"],
+    summary: "Clear face shield for splash protection during clinical procedures and cleaning work.",
+    uses: ["Surgery", "Dental", "Infection Control", "Emergency"],
+    features: ["Wide visor", "Foam brow pad", "Adjustable head band"],
+    guidance: "Use with a mask when fluid splash or close patient contact is expected."
   },
   {
-    id: "DP-FOOT-EH-760",
-    name: "VoltStep EH Electrical Safety Boot",
-    brand: "Danphis Select",
-    model: "VS-760",
-    category: "Electrical PPE",
-    image: assets.boots,
-    price: 188,
-    rating: 4.5,
-    popularity: 76,
-    newest: 5,
-    inventory: 74,
-    availability: "In stock",
-    summary: "Electrical hazard boot for utilities, maintenance, and light industrial electrical exposure.",
-    industries: ["Government", "Manufacturing", "Construction"],
-    hazards: ["Electrical hazard", "Impact", "Slip"],
-    standards: ["ASTM F2413 EH", "EN ISO 20345", "SRC"],
-    protectionLevel: "EH rated",
-    colour: "Black",
-    sizes: ["7", "8", "9", "10", "11", "12"],
-    material: "Leather upper, dielectric outsole",
-    weight: "760 g per boot size 9",
-    packaging: "1 pair per box",
-    certification: "ASTM F2413 EH",
-    hazardRating: "Electrical hazard footwear, impact, slip",
-    chemicalResistance: "Oil-resistant outsole",
-    heatResistance: "Standard work boot heat exposure",
-    cutResistance: "Not applicable",
-    electricalRating: "EH rated outsole",
-    waterproofRating: "Water-resistant upper",
-    uvProtection: "Not applicable",
-    enStandards: "EN ISO 20345",
-    ansiStandards: "ASTM F2413 EH",
-    isoStandards: "ISO 20345",
-    applications: ["Utilities", "Electrical maintenance", "Facility work"],
-    features: ["EH outsole", "Composite toe", "Padded tongue", "Slip-resistant tread"],
-    benefits: ["Electrical hazard coverage", "Metal-free comfort", "Stable sole"],
-    shelfLife: "Use within 3 years of manufacture",
-    storage: "Store dry and inspect before every use",
-    cleaning: "Wipe clean and dry away from direct heat",
-    country: "India",
-    manufacturer: "Danphis Select",
-    warranty: "6 months against manufacturing defects",
-    pros: "Electrical hazard rated, durable, comfortable for long shifts",
-    cons: "Not a substitute for insulating overshoes or live-line controls",
-    related: ["DP-HEAD-ARC-700", "DP-CLO-FR-730"],
-    accessories: ["Dielectric overshoes", "Electrical safety signage"],
-    boughtTogether: ["DP-CLO-FR-730", "DP-HEAD-ARC-700"]
-  },
-  {
-    id: "DP-HEAD-360",
-    name: "CoreGuard Vented Helmet & Goggle Kit",
-    brand: "JSP",
-    model: "CG-360",
-    category: "Head Protection",
-    image: assets.headEye,
-    price: 58,
-    rating: 4.7,
-    popularity: 91,
-    newest: 6,
-    inventory: 318,
-    availability: "In stock",
-    summary: "Vented hard hat bundled with clear impact goggles for construction and site visitors.",
-    industries: ["Construction", "Warehousing", "Government", "Education"],
-    hazards: ["Impact", "Flying particles", "Dust"],
-    standards: ["EN 397", "ANSI Z89.1", "EN 166"],
-    protectionLevel: "Impact Type I",
-    colour: "Yellow/Clear",
-    sizes: ["Adjustable"],
-    material: "HDPE shell, polycarbonate lens",
-    weight: "430 g kit",
-    packaging: "1 helmet, 1 goggle",
-    certification: "EN 397 helmet, EN 166 eyewear",
-    hazardRating: "Head impact and eye impact",
-    chemicalResistance: "Goggle splash resistant only",
-    heatResistance: "Standard site heat exposure",
-    cutResistance: "Not applicable",
-    electricalRating: "Helmet not dielectric",
-    waterproofRating: "Water resistant shell",
-    uvProtection: "99.9% lens UV protection",
-    enStandards: "EN 397, EN 166",
-    ansiStandards: "ANSI Z89.1, ANSI Z87.1 guidance",
-    isoStandards: "ISO 16321 guidance",
-    applications: ["Construction", "Visitors", "Warehousing", "Maintenance"],
-    features: ["Ratchet harness", "Vented shell", "Anti-scratch lens", "Goggle strap compatibility"],
-    benefits: ["Simple site issue kit", "Comfortable adjustment", "Reliable impact protection"],
-    shelfLife: "Helmet 5 years from manufacture, lens replace if scratched",
-    storage: "Store out of direct sunlight and chemicals",
-    cleaning: "Clean shell and lens with mild soap and water",
-    country: "United Kingdom",
-    manufacturer: "JSP",
-    warranty: "12 months against manufacturing defects",
-    pros: "Simple kit, good site coverage, easy issue control",
-    cons: "Vented helmet is not suitable for electrical exposure",
-    related: ["DP-GLO-CUT-A5", "DP-HIVIS-JKT-510"],
-    accessories: ["Chin strap", "Helmet sweatbands", "Replacement goggles"],
-    boughtTogether: ["DP-HIVIS-JKT-510", "DP-GLO-CUT-A5"]
-  },
-  {
-    id: "DP-EYE-GOG-220",
-    name: "ClearView 220 Indirect Vent Goggle",
-    brand: "Uvex",
-    model: "CV-220",
+    id: "DKM-EYE-220",
+    name: "Protective Safety Goggles",
     category: "Eye Protection",
-    image: assets.headEye,
-    price: 18,
+    department: "Laboratory",
+    image: assets.eye,
+    price: 16,
     rating: 4.6,
-    popularity: 88,
+    popularity: 84,
     newest: 4,
+    inventory: 680,
+    availability: "In stock",
+    protection: "Eye splash",
+    sizes: ["Universal"],
+    pack: "1 pair",
+    standards: ["EN 166 guidance"],
+    summary: "Comfortable clear goggles for labs, infection control, theatre support, and cleaning teams.",
+    uses: ["Laboratory", "Infection Control", "Surgery", "Dental"],
+    features: ["Clear lens", "Indirect vent feel", "Reusable frame"],
+    guidance: "Use when eyes may be exposed to splash, aerosols, or cleaning chemicals."
+  },
+  {
+    id: "DKM-HAND-310",
+    name: "Nitrile Examination Gloves",
+    category: "Hand Protection",
+    department: "Wards",
+    image: assets.hand,
+    price: 32,
+    rating: 4.9,
+    popularity: 99,
+    newest: 8,
+    inventory: 2400,
+    availability: "In stock",
+    protection: "Exam glove",
+    sizes: ["S", "M", "L", "XL"],
+    pack: "100 gloves per box",
+    standards: ["Medical exam use"],
+    summary: "Powder-free nitrile exam gloves for everyday patient care and cleaning tasks.",
+    uses: ["Wards", "Dental", "Laboratory", "Maternity"],
+    features: ["Powder-free", "Latex-free", "Textured fingertips"],
+    guidance: "Choose nitrile when latex sensitivity, durability, and everyday clinical use matter."
+  },
+  {
+    id: "DKM-GOWN-410",
+    name: "Isolation Gown",
+    category: "Gowns & Aprons",
+    department: "Infection Control",
+    image: assets.gown,
+    price: 68,
+    rating: 4.7,
+    popularity: 90,
+    newest: 9,
+    inventory: 340,
+    availability: "In stock",
+    protection: "Body barrier",
+    sizes: ["M", "L", "XL", "2XL"],
+    pack: "10 gowns per pack",
+    standards: ["Healthcare barrier use"],
+    summary: "Blue isolation gown for infection control, ward procedures, and patient-care areas.",
+    uses: ["Isolation rooms", "Wards", "Emergency", "Maternity"],
+    features: ["Tie back", "Elastic cuffs", "Fluid-resistant feel"],
+    guidance: "Use when clothing protection and simple body coverage are needed."
+  },
+  {
+    id: "DKM-RESP-520",
+    name: "N95 Respirator Mask",
+    category: "Respiratory Protection",
+    department: "ICU & Critical Care",
+    image: assets.respirator,
+    price: 42,
+    rating: 4.8,
+    popularity: 96,
+    newest: 10,
     inventory: 520,
     availability: "In stock",
-    summary: "Clear indirect-vent safety goggle for dust, splash, and impact protection.",
-    industries: ["Healthcare", "Manufacturing", "Oil & Gas", "Food Processing"],
-    hazards: ["Splash", "Dust", "Impact", "UV"],
-    standards: ["EN 166", "ANSI Z87.1", "ISO 16321"],
-    protectionLevel: "Impact and splash",
-    colour: "Clear",
+    protection: "Respiratory filtration",
     sizes: ["Universal"],
-    material: "Polycarbonate lens, PVC frame",
-    weight: "82 g",
-    packaging: "1 each, 100 per carton",
-    certification: "EN 166 3B, ANSI Z87.1",
-    hazardRating: "Splash, dust, impact",
-    chemicalResistance: "Splash protection only",
-    heatResistance: "Not heat rated",
-    cutResistance: "Not applicable",
-    electricalRating: "Not electrically rated",
-    waterproofRating: "Splash resistant",
-    uvProtection: "99.9% UV",
-    enStandards: "EN 166",
-    ansiStandards: "ANSI Z87.1",
-    isoStandards: "ISO 16321",
-    applications: ["Chemical splash", "Cleaning", "Dusty work", "Healthcare support"],
-    features: ["Indirect vents", "Anti-scratch lens", "Wide elastic strap"],
-    benefits: ["Splash coverage", "Fits many face shapes", "Strong value"],
-    shelfLife: "5 years unopened",
-    storage: "Store clean in pouch away from abrasive dust",
-    cleaning: "Wash with mild soap and water, dry with soft cloth",
-    country: "Germany",
-    manufacturer: "Uvex",
-    warranty: "12 months against manufacturing defects",
-    pros: "Low cost, strong splash coverage, light",
-    cons: "Can fog under high humidity without anti-fog treatment",
-    related: ["DP-GLO-CHEM-410", "DP-RESP-HF-620"],
-    accessories: ["Lens cleaning wipes", "Goggle storage pouch"],
-    boughtTogether: ["DP-GLO-CHEM-410", "DP-RESP-HF-620"]
+    pack: "20 masks per box",
+    standards: ["N95 guidance"],
+    summary: "N95-style respirator mask for high-risk clinical areas and respiratory precautions.",
+    uses: ["ICU", "Emergency", "Isolation", "Respiratory clinics"],
+    features: ["Moulded mask body", "Nose clip", "Secure head bands"],
+    guidance: "Use where respirator protection is required and follow local fit-check guidance."
   },
   {
-    id: "DP-HIVIS-JKT-510",
-    name: "HiVis Storm 510 Waterproof Jacket",
-    brand: "Portwest",
-    model: "HS-510",
-    category: "Protective Clothing",
-    image: assets.hivis,
-    price: 118,
-    rating: 4.8,
-    popularity: 92,
-    newest: 8,
-    inventory: 142,
-    availability: "In stock",
-    summary: "Orange waterproof high-visibility jacket for roads, warehousing, construction, and transport.",
-    industries: ["Construction", "Transport", "Warehousing", "Government"],
-    hazards: ["Low visibility", "Rain", "Wind", "Traffic"],
-    standards: ["EN ISO 20471", "ANSI 107", "EN 343"],
-    protectionLevel: "Class 3 hi-vis",
-    colour: "Orange",
-    sizes: ["S", "M", "L", "XL", "2XL", "3XL"],
-    material: "300D polyester PU-coated fabric",
-    weight: "920 g size L",
-    packaging: "1 each, 10 per carton",
-    certification: "EN ISO 20471 Class 3, EN 343",
-    hazardRating: "High visibility and rain",
-    chemicalResistance: "Not chemical protective",
-    heatResistance: "Not flame resistant",
-    cutResistance: "Not applicable",
-    electricalRating: "Not electrically rated",
-    waterproofRating: "EN 343 waterproof",
-    uvProtection: "Fabric blocks direct sun exposure",
-    enStandards: "EN ISO 20471, EN 343",
-    ansiStandards: "ANSI/ISEA 107 Type R Class 3 guidance",
-    isoStandards: "ISO 20471",
-    applications: ["Road works", "Transport yards", "Rainy site operations", "Night shift visibility"],
-    features: ["Reflective tape", "Storm flap", "Taped seams", "Adjustable cuffs"],
-    benefits: ["Better visibility", "All-weather comfort", "Procurement-friendly sizing"],
-    shelfLife: "Inspect reflectivity after repeated laundering",
-    storage: "Store dry and clean, away from sunlight when not in use",
-    cleaning: "Machine wash cold, do not bleach, line dry",
-    country: "Bangladesh",
-    manufacturer: "Portwest",
-    warranty: "6 months against manufacturing defects",
-    pros: "Class 3 visibility, waterproof, durable fabric",
-    cons: "Not flame resistant",
-    related: ["DP-FOOT-S3-900", "DP-HEAD-360"],
-    accessories: ["Hi-vis trousers", "Reflective arm bands"],
-    boughtTogether: ["DP-FOOT-S3-900", "DP-HEAD-360"]
-  },
-  {
-    id: "DP-CLO-FR-730",
-    name: "ArcShield FR Coverall",
-    brand: "Delta Plus",
-    model: "AS-FR730",
-    category: "Protective Clothing",
-    image: assets.hivis,
-    price: 245,
+    id: "DKM-FOOT-610",
+    name: "Disposable Shoe Covers",
+    category: "Foot Protection",
+    department: "Surgery & Theatre",
+    image: assets.foot,
+    price: 20,
     rating: 4.5,
-    popularity: 79,
+    popularity: 80,
     newest: 5,
-    inventory: 28,
-    availability: "Low stock",
-    summary: "Flame-resistant coverall for maintenance, utilities, oil and gas, and electrical support work.",
-    industries: ["Oil & Gas", "Manufacturing", "Government"],
-    hazards: ["Flame", "Arc flash", "Heat", "Minor splash"],
-    standards: ["NFPA 70E", "EN ISO 11612", "IEC 61482"],
-    protectionLevel: "FR CAT 2",
-    colour: "Navy/Orange",
-    sizes: ["S", "M", "L", "XL", "2XL", "3XL"],
-    material: "FR cotton blend",
-    weight: "290 gsm",
-    packaging: "1 each",
-    certification: "CAT 2 arc rated coverall",
-    hazardRating: "Flame and thermal exposure",
-    chemicalResistance: "Minor splash only, not chemical suit",
-    heatResistance: "EN ISO 11612",
-    cutResistance: "Not cut rated",
-    electricalRating: "Arc-rated garment, not insulating PPE",
-    waterproofRating: "Not waterproof",
-    uvProtection: "Fabric coverage",
-    enStandards: "EN ISO 11612, IEC 61482",
-    ansiStandards: "NFPA 70E guidance",
-    isoStandards: "ISO 11612",
-    applications: ["Electrical maintenance", "Oil and gas support", "Hot work supervision"],
-    features: ["FR fabric", "Reflective trim", "Two-way zip", "Action back"],
-    benefits: ["Thermal hazard coverage", "Professional fit", "Visible site presence"],
-    shelfLife: "Inspect before each use, replace damaged garments",
-    storage: "Store clean and dry, away from contaminants",
-    cleaning: "Follow FR laundry instructions, avoid bleach and softeners",
-    country: "Tunisia",
-    manufacturer: "Delta Plus",
-    warranty: "6 months against manufacturing defects",
-    pros: "FR and arc coverage, comfortable fabric, visible trim",
-    cons: "Needs correct layering and arc risk assessment",
-    related: ["DP-FOOT-EH-760", "DP-GLO-CHEM-410"],
-    accessories: ["FR balaclava", "Arc face shield"],
-    boughtTogether: ["DP-FOOT-EH-760", "DP-HEAD-ARC-700"]
+    inventory: 900,
+    availability: "In stock",
+    protection: "Floor hygiene",
+    sizes: ["Universal"],
+    pack: "100 covers per pack",
+    standards: ["Hospital hygiene"],
+    summary: "Disposable shoe covers for theatres, clean rooms, labs, and visitor control.",
+    uses: ["Surgery", "Laboratory", "Visitors", "Clean rooms"],
+    features: ["Elastic opening", "Lightweight", "Single-use"],
+    guidance: "Use in areas where footwear contamination control is required."
   },
   {
-    id: "DP-HEAR-31",
-    name: "EchoStop 31 dB Ear Defender",
-    brand: "3M",
-    model: "ES-31",
-    category: "Hearing Protection",
-    image: assets.hero,
-    price: 42,
+    id: "DKM-BODY-710",
+    name: "Protective Coverall Suit",
+    category: "Body Protection",
+    department: "Infection Control",
+    image: assets.body,
+    price: 74,
+    rating: 4.6,
+    popularity: 78,
+    newest: 6,
+    inventory: 160,
+    availability: "Low stock",
+    protection: "Full body cover",
+    sizes: ["M", "L", "XL", "2XL"],
+    pack: "1 suit",
+    standards: ["Healthcare coverall use"],
+    summary: "White coverall suit for enhanced body protection in cleaning and infection-control tasks.",
+    uses: ["Infection Control", "Cleaning", "Isolation support", "Emergency"],
+    features: ["Hooded cover", "Elastic cuffs", "Zip front"],
+    guidance: "Use when full clothing coverage is required for higher-risk support tasks."
+  },
+  {
+    id: "DKM-PAT-810",
+    name: "Patient Gown",
+    category: "Patient Care PPE",
+    department: "Wards",
+    image: assets.patient,
+    price: 26,
     rating: 4.4,
     popularity: 74,
     newest: 3,
-    inventory: 196,
+    inventory: 360,
     availability: "In stock",
-    summary: "Comfortable over-ear defender for high-noise sites, fabrication, construction, and mining.",
-    industries: ["Mining", "Construction", "Manufacturing"],
-    hazards: ["Noise", "Impact sound"],
-    standards: ["EN 352", "ANSI S3.19"],
-    protectionLevel: "SNR 31 dB",
-    colour: "Black/Orange",
-    sizes: ["Adjustable"],
-    material: "ABS cups, foam cushions",
-    weight: "250 g",
-    packaging: "1 each, 20 per carton",
-    certification: "EN 352-1",
-    hazardRating: "High-noise hearing conservation",
-    chemicalResistance: "Not chemical protective",
-    heatResistance: "Standard site use",
-    cutResistance: "Not applicable",
-    electricalRating: "Not electrically rated",
-    waterproofRating: "Wipe-clean surface",
-    uvProtection: "Not applicable",
-    enStandards: "EN 352",
-    ansiStandards: "ANSI S3.19",
-    isoStandards: "ISO 4869 guidance",
-    applications: ["Grinding", "Mining operations", "Road works", "Manufacturing"],
-    features: ["Padded headband", "Soft cushions", "Adjustable arms"],
-    benefits: ["Strong attenuation", "Comfortable for repeated use"],
-    shelfLife: "Replace cushions every 6 months with heavy use",
-    storage: "Store clean and dry",
-    cleaning: "Wipe cups and replace cushions as needed",
-    country: "United States",
-    manufacturer: "3M",
-    warranty: "12 months against manufacturing defects",
-    pros: "Strong noise reduction, easy issue item",
-    cons: "Can interfere with some helmets without adapters",
-    related: ["DP-RESP-HF-620", "DP-HEAD-360"],
-    accessories: ["Replacement hygiene kit", "Helmet adapter arms"],
-    boughtTogether: ["DP-HEAD-360", "DP-RESP-HF-620"]
+    protection: "Patient modesty",
+    sizes: ["M", "L", "XL"],
+    pack: "10 gowns per pack",
+    standards: ["Patient-care textile"],
+    summary: "Simple patient gown for wards, examination rooms, maternity, and day procedures.",
+    uses: ["Wards", "Maternity", "Outpatient", "Rehabilitation"],
+    features: ["Light fabric", "Easy patient access", "Bulk pack"],
+    guidance: "Use for patient comfort and modesty during care, transfer, or procedures."
   },
   {
-    id: "DP-HEAD-ARC-700",
-    name: "VoltGuard Arc Face Shield Kit",
-    brand: "MSA",
-    model: "VG-700",
-    category: "Face Shields",
-    image: assets.headEye,
-    price: 310,
-    rating: 4.6,
-    popularity: 70,
+    id: "DKM-DISP-910",
+    name: "Disposable Bed Sheet Pack",
+    category: "Disposables",
+    department: "Wards",
+    image: assets.disposables,
+    price: 38,
+    rating: 4.5,
+    popularity: 82,
+    newest: 4,
+    inventory: 440,
+    availability: "In stock",
+    protection: "Single-use bedding",
+    sizes: ["Standard"],
+    pack: "20 sheets per pack",
+    standards: ["Single-use patient care"],
+    summary: "Disposable sheets for examination beds, wards, outpatient rooms, and emergency areas.",
+    uses: ["Wards", "Outpatient", "Emergency", "Maternity"],
+    features: ["Soft sheet material", "Easy disposal", "Bulk pack"],
+    guidance: "Use where fast bed turnover and simple hygiene control are needed."
+  },
+  {
+    id: "DKM-INF-1010",
+    name: "Hand Sanitizer Dispenser Bottle",
+    category: "Infection Control",
+    department: "Infection Control",
+    image: assets.infection,
+    price: 14,
+    rating: 4.7,
+    popularity: 88,
     newest: 7,
-    inventory: 12,
-    availability: "Backorder",
-    summary: "Arc-rated face shield and headgear kit for electrical maintenance programmes.",
-    industries: ["Government", "Manufacturing", "Oil & Gas"],
-    hazards: ["Arc flash", "Heat", "Impact"],
-    standards: ["EN 166", "ASTM F2178", "IEC 61482"],
-    protectionLevel: "Arc-rated kit",
-    colour: "Clear/Tint",
-    sizes: ["Universal"],
-    material: "Polycarbonate arc-rated visor",
-    weight: "540 g kit",
-    packaging: "1 shield, headgear, storage bag",
-    certification: "Arc-rated face shield kit",
-    hazardRating: "Arc flash and impact",
-    chemicalResistance: "Not chemical splash primary PPE",
-    heatResistance: "Arc thermal exposure per rating",
-    cutResistance: "Not applicable",
-    electricalRating: "Arc-rated face shield, not insulating PPE",
-    waterproofRating: "Wipe-clean visor",
-    uvProtection: "99.9% UV",
-    enStandards: "EN 166, IEC 61482",
-    ansiStandards: "ASTM F2178 guidance",
-    isoStandards: "ISO 16321 guidance",
-    applications: ["Electrical switching", "Maintenance", "Utilities"],
-    features: ["Arc-rated visor", "Adjustable headgear", "Storage bag", "Chin guard"],
-    benefits: ["Face and thermal hazard coverage", "Reusable kit", "Tender documentation ready"],
-    shelfLife: "Inspect before each use, replace scratched visor",
-    storage: "Store in bag away from direct heat and sunlight",
-    cleaning: "Use approved lens cleaner and soft cloth",
-    country: "United States",
-    manufacturer: "MSA",
-    warranty: "12 months against manufacturing defects",
-    pros: "Arc coverage, robust headgear, strong document pack",
-    cons: "Backorder lead time may apply",
-    related: ["DP-CLO-FR-730", "DP-FOOT-EH-760"],
-    accessories: ["Replacement visor", "FR balaclava"],
-    boughtTogether: ["DP-CLO-FR-730", "DP-FOOT-EH-760"]
+    inventory: 700,
+    availability: "In stock",
+    protection: "Hand hygiene",
+    sizes: ["500 ml"],
+    pack: "1 bottle",
+    standards: ["Hand hygiene support"],
+    summary: "Pump bottle sanitizer for wards, reception points, treatment rooms, and visitor areas.",
+    uses: ["Wards", "Admin", "Visitors", "Dental"],
+    features: ["Pump dispenser", "Desk-friendly size", "Quick issue"],
+    guidance: "Place at entrances, nurse stations, treatment rooms, and shared work areas."
+  },
+  {
+    id: "DKM-WASTE-1110",
+    name: "Biohazard Waste Bin",
+    category: "Waste Management",
+    department: "Infection Control",
+    image: assets.waste,
+    price: 86,
+    rating: 4.6,
+    popularity: 77,
+    newest: 5,
+    inventory: 90,
+    availability: "Low stock",
+    protection: "Clinical waste",
+    sizes: ["Medium", "Large"],
+    pack: "1 bin",
+    standards: ["Clinical waste handling"],
+    summary: "Clearly marked biohazard bin for clinical waste collection and controlled disposal areas.",
+    uses: ["Infection Control", "Laboratory", "Wards", "Theatre"],
+    features: ["Biohazard marking", "Lidded design", "Easy-clean surface"],
+    guidance: "Use for designated clinical waste points according to facility waste procedures."
   }
 ];
 
@@ -707,21 +327,23 @@ function unique(values) {
   return [...new Set(values.flat().filter(Boolean))].sort((a, b) => a.localeCompare(b));
 }
 
+function findProduct(id) {
+  return products.find((product) => product.id === id);
+}
+
 function productText(product) {
   return [
     product.id,
     product.name,
-    product.brand,
     product.category,
-    product.model,
+    product.department,
     product.summary,
-    product.material,
-    product.certification,
-    product.protectionLevel,
-    ...product.industries,
-    ...product.hazards,
+    product.protection,
+    product.pack,
+    ...product.sizes,
     ...product.standards,
-    ...product.sizes
+    ...product.uses,
+    ...product.features
   ].join(" ").toLowerCase();
 }
 
@@ -730,9 +352,7 @@ function renderStars(rating) {
 }
 
 function stockClass(product) {
-  if (product.availability === "Backorder") return "backorder";
-  if (product.availability === "Low stock") return "low";
-  return "";
+  return product.availability === "Low stock" ? "low" : "";
 }
 
 function populateSelect(select, values, label) {
@@ -741,11 +361,8 @@ function populateSelect(select, values, label) {
 
 function initFilters() {
   populateSelect($("#filterCategory"), unique(products.map((p) => p.category)), "All categories");
-  populateSelect($("#filterBrand"), unique(products.map((p) => p.brand)), "All brands");
-  populateSelect($("#filterIndustry"), unique(products.map((p) => p.industries)), "All industries");
-  populateSelect($("#filterProtection"), unique(products.map((p) => p.protectionLevel)), "All protection levels");
-  populateSelect($("#filterStandard"), unique(products.map((p) => p.standards)), "All standards");
-  populateSelect($("#filterColour"), unique(products.map((p) => p.colour)), "All colours");
+  populateSelect($("#filterDepartment"), unique(products.map((p) => p.department)), "All departments");
+  populateSelect($("#filterProtection"), unique(products.map((p) => p.protection)), "All protection needs");
   populateSelect($("#filterSize"), unique(products.map((p) => p.sizes)), "All sizes");
   populateSelect($("#filterAvailability"), unique(products.map((p) => p.availability)), "All availability");
 }
@@ -753,11 +370,8 @@ function initFilters() {
 function getFilters() {
   return {
     category: $("#filterCategory").value,
-    brand: $("#filterBrand").value,
-    industry: $("#filterIndustry").value,
+    department: $("#filterDepartment").value,
     protection: $("#filterProtection").value,
-    standard: $("#filterStandard").value,
-    colour: $("#filterColour").value,
     size: $("#filterSize").value,
     availability: $("#filterAvailability").value,
     price: Number($("#filterPrice").value),
@@ -768,17 +382,12 @@ function getFilters() {
 function filteredProducts() {
   const filters = getFilters();
   const result = products.filter((product) => {
-    const priceOk = product.price <= filters.price;
-    const searchOk = !filters.search || productText(product).includes(filters.search);
     return (
-      priceOk &&
-      searchOk &&
+      product.price <= filters.price &&
+      (!filters.search || productText(product).includes(filters.search)) &&
       (!filters.category || product.category === filters.category) &&
-      (!filters.brand || product.brand === filters.brand) &&
-      (!filters.industry || product.industries.includes(filters.industry)) &&
-      (!filters.protection || product.protectionLevel === filters.protection) &&
-      (!filters.standard || product.standards.includes(filters.standard)) &&
-      (!filters.colour || product.colour === filters.colour) &&
+      (!filters.department || product.department === filters.department) &&
+      (!filters.protection || product.protection === filters.protection) &&
       (!filters.size || product.sizes.includes(filters.size)) &&
       (!filters.availability || product.availability === filters.availability)
     );
@@ -794,29 +403,50 @@ function filteredProducts() {
   });
 }
 
+function renderCategoryGrid() {
+  $("#categoryGrid").innerHTML = categories.map(([name, description, image]) => `
+    <a class="category-card hospital-category-card" href="#shop" data-shop-category="${escapeHtml(name)}">
+      <img src="${image}" alt="${escapeHtml(name)}" loading="lazy">
+      <div>
+        <h3>${escapeHtml(name)}</h3>
+        <span>${escapeHtml(description)}</span>
+      </div>
+    </a>
+  `).join("");
+}
+
+function renderDepartments() {
+  $("#departmentGrid").innerHTML = departments.map(([name, description]) => `
+    <a class="department-card" href="#shop" data-shop-department="${escapeHtml(name)}">
+      <strong>${escapeHtml(name)}</strong>
+      <span>${escapeHtml(description)}</span>
+    </a>
+  `).join("");
+}
+
 function productCard(product) {
-  const compareActive = state.compare.has(product.id) ? " active" : "";
-  const wishActive = state.wishlist.has(product.id) ? " active" : "";
   return `
     <article class="product-card" data-id="${product.id}">
       <button class="product-image" type="button" data-action="detail" data-id="${product.id}" aria-label="Open ${escapeHtml(product.name)} details">
         <img src="${product.image}" alt="${escapeHtml(product.name)}" loading="lazy">
-        <span class="product-badge">${escapeHtml(product.protectionLevel)}</span>
+        <span class="product-badge">${escapeHtml(product.department)}</span>
         <span class="stock-badge ${stockClass(product)}">${escapeHtml(product.availability)}</span>
       </button>
       <div class="product-content">
-        <div class="product-kicker"><span>${escapeHtml(product.brand)}</span><span>${escapeHtml(product.id)}</span></div>
+        <div class="product-kicker"><span>${escapeHtml(product.category)}</span><span>${escapeHtml(product.id)}</span></div>
         <h3>${escapeHtml(product.name)}</h3>
         <p class="product-summary">${escapeHtml(product.summary)}</p>
-        <div class="product-tags">${product.standards.slice(0, 3).map((tag) => `<span class="tag">${escapeHtml(tag)}</span>`).join("")}</div>
+        <div class="product-tags">
+          <span class="tag">${escapeHtml(product.protection)}</span>
+          <span class="tag">${escapeHtml(product.pack)}</span>
+        </div>
         <div class="price-row">
           <span class="price">${formatMoney(product.price)}</span>
           ${renderStars(product.rating)}
         </div>
         <div class="product-card-actions">
           <button class="button primary" type="button" data-action="add" data-id="${product.id}"><svg><use href="#icon-cart"></use></svg> Add</button>
-          <button class="icon-button${compareActive}" type="button" data-action="compare" data-id="${product.id}" aria-label="Compare ${escapeHtml(product.name)}" title="Compare"><svg><use href="#icon-compare"></use></svg></button>
-          <button class="icon-button${wishActive}" type="button" data-action="wish" data-id="${product.id}" aria-label="Save ${escapeHtml(product.name)}" title="Wishlist"><svg><use href="#icon-heart"></use></svg></button>
+          <button class="button ghost" type="button" data-action="detail" data-id="${product.id}">Details</button>
         </div>
       </div>
     </article>
@@ -829,80 +459,18 @@ function renderProducts() {
   grid.classList.toggle("list", state.view === "list");
   grid.innerHTML = results.length
     ? results.map(productCard).join("")
-    : `<div class="detail-panel"><h3>No products found</h3><p>Try a different category, standard, hazard, or price range.</p></div>`;
+    : `<div class="detail-panel"><h3>No products found</h3><p>Try a different category, department, or search term.</p></div>`;
   $("#resultCount").textContent = `${results.length} product${results.length === 1 ? "" : "s"}`;
   $("#priceValue").textContent = $("#filterPrice").value;
-  renderProductStrips();
-  renderComparisonState();
-}
-
-function renderCategoryGrid() {
-  $("#categoryGrid").innerHTML = categories.map(([name, description, icon]) => `
-    <a class="category-card" href="#shop" data-shop-category="${escapeHtml(name)}">
-      <div>
-        <span class="category-icon"><svg><use href="#${icon}"></use></svg></span>
-        <h3>${escapeHtml(name)}</h3>
-      </div>
-      <span>${escapeHtml(description)}</span>
-    </a>
-  `).join("");
-}
-
-function renderProductStrips() {
-  const newProducts = [...products].sort((a, b) => b.newest - a.newest).slice(0, 4);
-  const bestSellers = [...products].sort((a, b) => b.popularity - a.popularity).slice(0, 4);
-  $("#newProducts").innerHTML = newProducts.map(miniProduct).join("");
-  $("#bestSellers").innerHTML = bestSellers.map(miniProduct).join("");
-}
-
-function miniProduct(product) {
-  return `
-    <button class="mini-product" type="button" data-action="detail" data-id="${product.id}">
-      <img src="${product.image}" alt="${escapeHtml(product.name)}" loading="lazy">
-      <span>
-        <h3>${escapeHtml(product.name)}</h3>
-        <p>${escapeHtml(product.protectionLevel)} | ${formatMoney(product.price)}</p>
-      </span>
-    </button>
-  `;
-}
-
-function renderIndustries() {
-  $("#industryGrid").innerHTML = industries.map(([name, hazards, recommendations]) => `
-    <article class="industry-card">
-      <h3>${escapeHtml(name)}</h3>
-      <p>${escapeHtml(hazards)}</p>
-      <ul>${recommendations.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}</ul>
-    </article>
-  `).join("");
-}
-
-function renderBrands() {
-  $("#brandGrid").innerHTML = brands.map(([name, description]) => `
-    <article class="brand-card">
-      <div class="brand-mark">${escapeHtml(name[0])}</div>
-      <div>
-        <h3>${escapeHtml(name)}</h3>
-        <p>${escapeHtml(description)}</p>
-      </div>
-    </article>
-  `).join("");
 }
 
 function renderProductDetail(product) {
-  const relatedProducts = product.related.map(findProduct).filter(Boolean);
-  const boughtTogether = product.boughtTogether.map(findProduct).filter(Boolean);
   $("#productDetail").innerHTML = `
-    <article class="product-detail">
+    <article class="product-detail simple-product-detail">
       <div class="detail-hero">
         <div class="detail-gallery">
-          <div class="gallery-main" id="galleryMain">
+          <div class="gallery-main">
             <img src="${product.image}" alt="${escapeHtml(product.name)}">
-          </div>
-          <div class="gallery-actions">
-            <button class="button ghost" type="button" id="zoomProduct"><svg><use href="#icon-search"></use></svg> Zoom</button>
-            <button class="button ghost" type="button" id="rotateProduct"><svg><use href="#icon-rotate"></use></svg> 360 view</button>
-            <button class="button ghost" type="button" id="videoProduct"><svg><use href="#icon-play"></use></svg> Video</button>
           </div>
         </div>
         <div class="detail-summary">
@@ -910,10 +478,10 @@ function renderProductDetail(product) {
           <h2>${escapeHtml(product.name)}</h2>
           <p>${escapeHtml(product.summary)}</p>
           <div class="detail-meta">
-            <span>${escapeHtml(product.brand)}</span>
+            <span>${escapeHtml(product.department)}</span>
             <span>${escapeHtml(product.id)}</span>
-            <span>${escapeHtml(product.certification)}</span>
-            <span>${product.inventory} units available</span>
+            <span>${product.inventory} available</span>
+            <span>${escapeHtml(product.pack)}</span>
           </div>
           <div class="detail-price">
             <strong>${formatMoney(product.price)}</strong>
@@ -921,170 +489,44 @@ function renderProductDetail(product) {
           </div>
           <div class="drawer-actions">
             <button class="button primary" type="button" data-action="add" data-id="${product.id}"><svg><use href="#icon-cart"></use></svg> Add to cart</button>
-            <button class="button secondary" type="button" data-action="compare" data-id="${product.id}"><svg><use href="#icon-compare"></use></svg> Compare</button>
-            <button class="button ghost" type="button" data-action="wish" data-id="${product.id}"><svg><use href="#icon-heart"></use></svg> Wishlist</button>
-          </div>
-          <div>
-            <h3>Downloads</h3>
-            <div class="download-list">
-              <a href="#resources"><svg><use href="#icon-download"></use></svg> Datasheet</a>
-              <a href="#resources"><svg><use href="#icon-download"></use></svg> Certificate</a>
-              <a href="#resources"><svg><use href="#icon-download"></use></svg> Declaration</a>
-              <a href="#resources"><svg><use href="#icon-download"></use></svg> Warranty</a>
-            </div>
+            <a class="button secondary" href="#quote" id="detailQuoteButton">Request quote</a>
           </div>
         </div>
       </div>
-
-      <div class="detail-sections">
+      <div class="detail-sections simple-detail-sections">
         <section class="detail-panel">
-          <h3>Specifications</h3>
-          ${specTable(product)}
-        </section>
-        <section class="detail-panel">
-          <h3>Applications and industries</h3>
-          <div class="compliance-list">${product.applications.map((item) => `<span>${escapeHtml(item)}</span>`).join("")}</div>
-          <h3>Industries</h3>
-          <div class="compliance-list">${product.industries.map((item) => `<span>${escapeHtml(item)}</span>`).join("")}</div>
-          <h3>Hazards protected against</h3>
-          <div class="hazard-list">${product.hazards.map((item) => `<span>${escapeHtml(item)}</span>`).join("")}</div>
-        </section>
-        <section class="detail-panel">
-          <h3>Features</h3>
-          <ul class="feature-list">${product.features.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}</ul>
-          <h3>Benefits</h3>
-          <ul class="feature-list">${product.benefits.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}</ul>
-        </section>
-        <section class="detail-panel">
-          <h3>Care and ownership</h3>
+          <h3>Plain details</h3>
           <table class="spec-table">
             <tbody>
-              <tr><th>Material</th><td>${escapeHtml(product.material)}</td></tr>
-              <tr><th>Shelf life</th><td>${escapeHtml(product.shelfLife)}</td></tr>
-              <tr><th>Storage</th><td>${escapeHtml(product.storage)}</td></tr>
-              <tr><th>Cleaning</th><td>${escapeHtml(product.cleaning)}</td></tr>
-              <tr><th>Country of origin</th><td>${escapeHtml(product.country)}</td></tr>
-              <tr><th>Manufacturer</th><td>${escapeHtml(product.manufacturer)}</td></tr>
-              <tr><th>Warranty</th><td>${escapeHtml(product.warranty)}</td></tr>
+              <tr><th>Category</th><td>${escapeHtml(product.category)}</td></tr>
+              <tr><th>Department</th><td>${escapeHtml(product.department)}</td></tr>
+              <tr><th>Protection need</th><td>${escapeHtml(product.protection)}</td></tr>
+              <tr><th>Sizes</th><td>${escapeHtml(product.sizes.join(", "))}</td></tr>
+              <tr><th>Pack</th><td>${escapeHtml(product.pack)}</td></tr>
+              <tr><th>Standards</th><td>${escapeHtml(product.standards.join(", "))}</td></tr>
             </tbody>
           </table>
         </section>
+        <section class="detail-panel">
+          <h3>Best used for</h3>
+          <div class="compliance-list">${product.uses.map((item) => `<span>${escapeHtml(item)}</span>`).join("")}</div>
+          <h3>Features</h3>
+          <ul class="feature-list">${product.features.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}</ul>
+        </section>
         <section class="assistant-panel">
-          <div class="assistant-title"><svg><use href="#icon-bot"></use></svg> Danphis product advisor</div>
-          <div class="assistant-examples">
-            <button type="button" data-question="What glove is best for handling acids?">What glove is best for handling acids?</button>
-            <button type="button" data-question="Can I use this respirator for welding?">Can I use this respirator for welding?</button>
-            <button type="button" data-question="Compare this boot with another.">Compare this boot with another.</button>
-            <button type="button" data-question="What size should I buy?">What size should I buy?</button>
-          </div>
-          <form class="assistant-input" id="advisorForm">
-            <label class="sr-only" for="advisorQuestion">Ask about this product</label>
-            <input id="advisorQuestion" type="search" placeholder="Ask about this product">
-            <button class="button primary" type="submit">Ask</button>
-          </form>
-          <div class="assistant-answer" id="advisorAnswer">I answer from this Danphis product record: standards, hazards, materials, industries, applications, and care data.</div>
-        </section>
-        <section class="detail-panel">
-          <h3>Related products</h3>
-          <div class="related-list">${relatedProducts.map(miniProduct).join("")}</div>
-        </section>
-        <section class="detail-panel">
-          <h3>Frequently bought together</h3>
-          <div class="related-list">${boughtTogether.map(miniProduct).join("")}</div>
-        </section>
-        <section class="detail-panel">
-          <h3>Customer reviews</h3>
-          <p>${product.rating} average rating from ${Math.round(product.popularity * 2.8)} verified procurement and site buyers.</p>
-        </section>
-        <section class="detail-panel">
-          <h3>Questions and answers</h3>
-          <p>Common questions cover sizing, standards, cleaning, compatible accessories, and industry suitability for ${escapeHtml(product.name)}.</p>
+          <div class="assistant-title"><svg><use href="#icon-bot"></use></svg> Quick guidance</div>
+          <p class="assistant-answer">${escapeHtml(product.guidance)}</p>
         </section>
       </div>
     </article>
   `;
 
-  $("#zoomProduct").addEventListener("click", () => $("#galleryMain").classList.toggle("zoom"));
-  $("#rotateProduct").addEventListener("click", () => {
-    const gallery = $("#galleryMain");
-    gallery.classList.remove("rotate");
-    window.requestAnimationFrame(() => gallery.classList.add("rotate"));
-  });
-  $("#videoProduct").addEventListener("click", () => showToast("Product video placeholder is ready for CMS media."));
-  $("#advisorForm").addEventListener("submit", (event) => {
-    event.preventDefault();
-    answerAdvisor(product, $("#advisorQuestion").value);
-  });
-  $$(".assistant-examples button").forEach((button) => {
-    button.addEventListener("click", () => {
-      $("#advisorQuestion").value = button.dataset.question;
-      answerAdvisor(product, button.dataset.question);
-    });
-  });
-}
-
-function specTable(product) {
-  const rows = [
-    ["Brand", product.brand],
-    ["Model", product.model],
-    ["SKU", product.id],
-    ["Certification", product.certification],
-    ["Material", product.material],
-    ["Weight", product.weight],
-    ["Protection level", product.protectionLevel],
-    ["Colour", product.colour],
-    ["Packaging", product.packaging],
-    ["Available sizes", product.sizes.join(", ")],
-    ["Industry", product.industries.join(", ")],
-    ["Hazard rating", product.hazardRating],
-    ["Chemical resistance", product.chemicalResistance],
-    ["Heat resistance", product.heatResistance],
-    ["Cut resistance", product.cutResistance],
-    ["Electrical rating", product.electricalRating],
-    ["Waterproof rating", product.waterproofRating],
-    ["UV protection", product.uvProtection],
-    ["EN standards", product.enStandards],
-    ["ANSI standards", product.ansiStandards],
-    ["ISO standards", product.isoStandards]
-  ];
-  return `<table class="spec-table"><tbody>${rows.map(([label, value]) => `<tr><th>${escapeHtml(label)}</th><td>${escapeHtml(value)}</td></tr>`).join("")}</tbody></table>`;
-}
-
-function answerAdvisor(product, rawQuestion) {
-  const question = rawQuestion.trim().toLowerCase();
-  if (!question) return;
-
-  let answer;
-  if (question.includes("acid") || question.includes("chemical")) {
-    const matches = products.filter((item) => item.hazards.some((hazard) => /acid|caustic|splash/i.test(hazard)) || /chemical/i.test(item.protectionLevel));
-    answer = `For acid or chemical handling, Danphis data points first to ${matches.map((item) => item.name).slice(0, 2).join(" and ")}. This product record lists ${product.chemicalResistance.toLowerCase()} and standards ${product.standards.join(", ")}.`;
-  } else if (question.includes("weld")) {
-    const suitable = product.hazards.some((hazard) => /weld|fume/i.test(hazard)) || product.applications.some((app) => /weld/i.test(app));
-    answer = suitable
-      ? `${product.name} is listed for welding-related use in Danphis data: applications include ${product.applications.join(", ")}. Confirm filter, fit, and site exposure requirements before issue.`
-      : `${product.name} is not primarily listed for welding in Danphis data. Compare it with WeldAir P3 Fume Respirator Kit for welding fume tasks.`;
-  } else if (question.includes("compare") || question.includes("another")) {
-    const peer = products.find((item) => item.category === product.category && item.id !== product.id) || products.find((item) => item.id !== product.id);
-    answer = `${product.name} has ${product.protectionLevel}, ${product.weight}, and standards ${product.standards.join(", ")}. A close comparison is ${peer.name}, which has ${peer.protectionLevel}, ${peer.weight}, and standards ${peer.standards.join(", ")}.`;
-  } else if (question.includes("size")) {
-    answer = `Available Danphis sizes for ${product.name}: ${product.sizes.join(", ")}. For boots, match your usual work boot size and allow sock thickness. For respirators, fit testing should decide final size. For gloves, measure palm circumference and task dexterity needs.`;
-  } else if (question.includes("standard") || question.includes("cert")) {
-    answer = `${product.name} lists certification ${product.certification}. Standards in the Danphis record are ${product.standards.join(", ")}.`;
-  } else {
-    answer = `${product.name} is recorded for ${product.industries.join(", ")} and protects against ${product.hazards.join(", ")}. Main features are ${product.features.join(", ")}.`;
-  }
-
-  $("#advisorAnswer").textContent = answer;
-}
-
-function findProduct(id) {
-  return products.find((product) => product.id === id);
+  $("#detailQuoteButton").addEventListener("click", () => closeDrawer("#productDrawer"));
 }
 
 function openProduct(id) {
   const product = findProduct(id);
   if (!product) return;
-  state.recentlyViewed = [id, ...state.recentlyViewed.filter((item) => item !== id)].slice(0, 5);
   renderProductDetail(product);
   openDrawer("#productDrawer");
 }
@@ -1142,85 +584,31 @@ function renderCart() {
         </article>
       `;
     }).join("")
-    : `<p>Your cart is ready for PPE selection.</p>`;
+    : `<p>Your cart is empty.</p>`;
 
-  const subtotal = state.cart.reduce((total, line) => {
-    const product = findProduct(line.id);
-    return total + product.price * line.qty;
-  }, 0);
-  const itemCount = state.cart.reduce((total, line) => total + line.qty, 0);
-  const shipping = subtotal === 0 ? 0 : subtotal > 500 ? 0 : 24 + itemCount * 3;
+  const subtotal = state.cart.reduce((total, line) => total + findProduct(line.id).price * line.qty, 0);
+  const shipping = subtotal === 0 ? 0 : subtotal > 400 ? 0 : 18;
   $("#cartSubtotal").textContent = formatMoney(subtotal);
   $("#shippingEstimate").textContent = formatMoney(shipping);
   $("#cartTotal").textContent = formatMoney(subtotal + shipping);
 }
 
-function toggleWishlist(id) {
-  if (state.wishlist.has(id)) state.wishlist.delete(id);
-  else state.wishlist.add(id);
-  $("#wishlistCount").textContent = `${state.wishlist.size} saved`;
-  renderProducts();
-  showToast(state.wishlist.has(id) ? "Saved to wishlist." : "Removed from wishlist.");
-}
-
-function toggleCompare(id) {
-  if (state.compare.has(id)) {
-    state.compare.delete(id);
-  } else {
-    if (state.compare.size >= 4) {
-      showToast("Compare up to four products at once.");
-      return;
-    }
-    state.compare.add(id);
-  }
-  renderProducts();
-}
-
-function renderComparisonState() {
-  const count = state.compare.size;
-  $("#compareCount").textContent = count;
-  $("#compareFloat").hidden = count === 0;
-  const selected = [...state.compare].map(findProduct).filter(Boolean);
-  $("#comparisonTable").innerHTML = selected.length
-    ? comparisonTable(selected)
-    : `<p>Select products from the catalogue to compare features, standards, price, ratings, weight, protection level, pros, and cons.</p>`;
-}
-
-function comparisonTable(selected) {
-  const rows = [
-    ["Features", (p) => p.features.join(", ")],
-    ["Standards", (p) => p.standards.join(", ")],
-    ["Price", (p) => formatMoney(p.price)],
-    ["Rating", (p) => `${p.rating}/5`],
-    ["Weight", (p) => p.weight],
-    ["Protection level", (p) => p.protectionLevel],
-    ["Pros", (p) => p.pros],
-    ["Cons", (p) => p.cons]
-  ];
-  return `
-    <table class="comparison-table">
-      <thead>
-        <tr><th>Attribute</th>${selected.map((product) => `<th>${escapeHtml(product.name)}</th>`).join("")}</tr>
-      </thead>
-      <tbody>
-        ${rows.map(([label, getter]) => `<tr><th>${label}</th>${selected.map((product) => `<td>${escapeHtml(getter(product))}</td>`).join("")}</tr>`).join("")}
-      </tbody>
-    </table>
-  `;
-}
-
 function handleAction(target) {
-  const actionButton = target.closest("[data-action]");
-  if (!actionButton) return;
-  const { action, id } = actionButton.dataset;
+  const button = target.closest("[data-action]");
+  if (!button) return;
+  const { action, id } = button.dataset;
   if (action === "detail") openProduct(id);
   if (action === "add") addToCart(id);
-  if (action === "wish") toggleWishlist(id);
-  if (action === "compare") toggleCompare(id);
 }
 
 function applyCategory(category) {
   $("#filterCategory").value = category;
+  $("#catalogueSearch").value = "";
+  renderProducts();
+}
+
+function applyDepartment(department) {
+  $("#filterDepartment").value = department;
   $("#catalogueSearch").value = "";
   renderProducts();
 }
@@ -1230,23 +618,14 @@ function showToast(message) {
   toast.textContent = message;
   toast.classList.add("show");
   clearTimeout(showToast.timer);
-  showToast.timer = setTimeout(() => toast.classList.remove("show"), 2600);
-}
-
-function setHeroSlide(index) {
-  const slide = heroSlides[index];
-  state.heroIndex = index;
-  $("#heroEyebrow").textContent = slide.eyebrow;
-  $("#heroTitle").textContent = slide.title;
-  $("#heroBody").textContent = slide.body;
-  $$(".hero-dot").forEach((dot, dotIndex) => dot.classList.toggle("active", dotIndex === index));
+  showToast.timer = setTimeout(() => toast.classList.remove("show"), 2400);
 }
 
 function injectStructuredData() {
   const itemList = {
     "@context": "https://schema.org",
     "@type": "ItemList",
-    name: "Danphis PPE Catalogue",
+    name: "DEKMAR LTD Hospital PPE Catalogue",
     itemListElement: products.map((product, index) => ({
       "@type": "ListItem",
       position: index + 1,
@@ -1254,7 +633,7 @@ function injectStructuredData() {
         "@type": "Product",
         name: product.name,
         sku: product.id,
-        brand: { "@type": "Brand", name: product.brand },
+        brand: { "@type": "Brand", name: "DEKMAR LTD" },
         image: product.image,
         description: product.summary,
         category: product.category,
@@ -1262,12 +641,7 @@ function injectStructuredData() {
           "@type": "Offer",
           priceCurrency: "AUD",
           price: product.price,
-          availability: product.availability === "Backorder" ? "https://schema.org/BackOrder" : "https://schema.org/InStock"
-        },
-        aggregateRating: {
-          "@type": "AggregateRating",
-          ratingValue: product.rating,
-          reviewCount: Math.round(product.popularity * 2.8)
+          availability: product.availability === "Low stock" ? "https://schema.org/LimitedAvailability" : "https://schema.org/InStock"
         }
       }
     }))
@@ -1280,8 +654,6 @@ function injectStructuredData() {
 
 function bindEvents() {
   $("#productGrid").addEventListener("click", (event) => handleAction(event.target));
-  $("#newProducts").addEventListener("click", (event) => handleAction(event.target));
-  $("#bestSellers").addEventListener("click", (event) => handleAction(event.target));
   $("#productDetail").addEventListener("click", (event) => handleAction(event.target));
   $("#cartItems").addEventListener("click", (event) => {
     const button = event.target.closest("[data-cart-delta]");
@@ -1291,11 +663,8 @@ function bindEvents() {
 
   [
     "#filterCategory",
-    "#filterBrand",
-    "#filterIndustry",
+    "#filterDepartment",
     "#filterProtection",
-    "#filterStandard",
-    "#filterColour",
     "#filterSize",
     "#filterAvailability",
     "#filterPrice",
@@ -1318,6 +687,7 @@ function bindEvents() {
     $("#listView").classList.remove("active");
     renderProducts();
   });
+
   $("#listView").addEventListener("click", () => {
     state.view = "list";
     $("#listView").classList.add("active");
@@ -1329,27 +699,19 @@ function bindEvents() {
     state.currency = event.target.value;
     renderProducts();
     renderCart();
-    if ($("#productDrawer").classList.contains("open")) {
-      const current = state.recentlyViewed[0];
-      if (current) renderProductDetail(findProduct(current));
-    }
-    renderComparisonState();
   });
 
   document.addEventListener("click", (event) => {
     const categoryLink = event.target.closest("[data-shop-category]");
     if (categoryLink) applyCategory(categoryLink.dataset.shopCategory);
-  });
 
-  $$(".hero-dot").forEach((dot) => {
-    dot.addEventListener("click", () => setHeroSlide(Number(dot.dataset.slide)));
+    const departmentLink = event.target.closest("[data-shop-department]");
+    if (departmentLink) applyDepartment(departmentLink.dataset.shopDepartment);
   });
 
   $("#cartButton").addEventListener("click", () => openDrawer("#cartDrawer"));
   $("#closeCartDrawer").addEventListener("click", () => closeDrawer("#cartDrawer"));
   $("#closeProductDrawer").addEventListener("click", () => closeDrawer("#productDrawer"));
-  $("#compareFloat").addEventListener("click", () => openDrawer("#comparisonDrawer"));
-  $("#closeComparisonDrawer").addEventListener("click", () => closeDrawer("#comparisonDrawer"));
   $$(".drawer").forEach((drawer) => {
     drawer.addEventListener("click", (event) => {
       if (event.target === drawer) closeDrawer(`#${drawer.id}`);
@@ -1373,16 +735,16 @@ function bindEvents() {
 
   $("#quoteShortcut").addEventListener("click", () => $("#quote").scrollIntoView({ behavior: "smooth" }));
   $("#bulkOrderButton").addEventListener("click", () => {
-    $("#b2b").scrollIntoView({ behavior: "smooth" });
-    showToast("Upload a procurement list in the B2B form.");
+    $("#quote").scrollIntoView({ behavior: "smooth" });
+    showToast("Add your bulk quantities in the quote form.");
   });
-  $("#portalButton").addEventListener("click", () => $("#portal").scrollIntoView({ behavior: "smooth" }));
+  $("#portalButton").addEventListener("click", () => $("#contact").scrollIntoView({ behavior: "smooth" }));
 
-  ["#procurementForm", "#quoteForm", "#newsletterForm", "#checkoutForm"].forEach((selector) => {
+  ["#quoteForm", "#checkoutForm"].forEach((selector) => {
     $(selector).addEventListener("submit", (event) => {
       event.preventDefault();
       event.currentTarget.reset();
-      showToast("Submission captured for the Danphis prototype.");
+      showToast("Request captured for the DEKMAR LTD prototype.");
     });
   });
 
@@ -1395,14 +757,12 @@ function bindEvents() {
 
 function init() {
   renderCategoryGrid();
-  renderIndustries();
-  renderBrands();
+  renderDepartments();
   initFilters();
   bindEvents();
   renderProducts();
   renderCart();
   injectStructuredData();
-  setInterval(() => setHeroSlide((state.heroIndex + 1) % heroSlides.length), 6200);
 }
 
 document.addEventListener("DOMContentLoaded", init);

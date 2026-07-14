@@ -1,6 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 560 160" role="img" aria-labelledby="title desc">
-  <title id="title">Danphis Enterprises PPE Distribution</title>
-  <desc id="desc">Danphis Enterprises PPE Distribution logo with a protective equipment D icon and the tagline Protecting People, Powering Safety.</desc>
+  <title id="title">DEKMAR LTD PPE Solutions</title>
+  <desc id="desc">DEKMAR LTD PPE Solutions logo with protective equipment D mark.</desc>
   <g transform="translate(16 14)">
     <path d="M6 2h70c38 0 69 29 69 64s-31 64-69 64H6V2Z" fill="#ffffff"/>
     <path d="M9 6h56v22H31v96H9V6Z" fill="#0D1F3D"/>
@@ -12,11 +12,11 @@
     <path d="M60 103c7 2 12 7 16 14 2 4 6 7 10 7s8-3 10-7c4-7 9-12 16-14 0 19-12 31-26 31s-26-12-26-31Z" fill="#0D1F3D"/>
     <path d="M67 102c6 5 12 8 19 8s13-3 19-8" fill="none" stroke="#ffffff" stroke-width="4" stroke-linecap="round"/>
   </g>
-  <g transform="translate(180 24)">
-    <text x="0" y="44" fill="#0D1F3D" font-family="Arial Black, Arial, Helvetica, sans-serif" font-size="48" font-weight="900">DANPHIS</text>
-    <text x="2" y="78" fill="#FF6A00" font-family="Arial, Helvetica, sans-serif" font-size="24" font-weight="800" letter-spacing="9">ENTERPRISES</text>
-    <path d="M0 104h92M314 104h92" stroke="#0D1F3D" stroke-width="3"/>
-    <text x="112" y="112" fill="#0D1F3D" font-family="Arial, Helvetica, sans-serif" font-size="21" font-weight="900">PPE DISTRIBUTION</text>
+  <g transform="translate(180 27)">
+    <text x="0" y="44" fill="#0D1F3D" font-family="Arial Black, Arial, Helvetica, sans-serif" font-size="48" font-weight="900">DEKMAR</text>
+    <text x="2" y="80" fill="#FF6A00" font-family="Arial, Helvetica, sans-serif" font-size="24" font-weight="900" letter-spacing="8">LTD</text>
+    <path d="M0 106h92M294 106h92" stroke="#0D1F3D" stroke-width="3"/>
+    <text x="112" y="114" fill="#0D1F3D" font-family="Arial, Helvetica, sans-serif" font-size="21" font-weight="900">PPE SOLUTIONS</text>
     <text x="0" y="140" fill="#6B7280" font-family="Arial, Helvetica, sans-serif" font-size="16" font-weight="800">PROTECTING PEOPLE.</text>
     <text x="196" y="140" fill="#FF6A00" font-family="Arial, Helvetica, sans-serif" font-size="16" font-weight="900">POWERING SAFETY.</text>
   </g>
