@@ -1,8 +1,10 @@
 assets/*.png
+!assets/dekmer-logo.png
+!assets/dekmer-icon.png
 !assets/techbykennedy-logo.png
 assets/products/*.png
 assets/danphis-brand-board.jpg
-assets/dekmar-hospital*.jpg
+assets/dekmer-hospital*.jpg
 assets/brand-*.jpg
 assets/danphis-*.svg
 assets/danphis-ppe-hero.jpg

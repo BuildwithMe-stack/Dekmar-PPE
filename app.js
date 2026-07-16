@@ -628,7 +628,7 @@ function injectStructuredData() {
   const itemList = {
     "@context": "https://schema.org",
     "@type": "ItemList",
-    name: "DEKMAR LTD Hospital PPE Catalogue",
+    name: "DEKMER SPACES LTD Hospital PPE Catalogue",
     itemListElement: products.map((product, index) => ({
       "@type": "ListItem",
       position: index + 1,
@@ -636,7 +636,7 @@ function injectStructuredData() {
         "@type": "Product",
         name: product.name,
         sku: product.id,
-        brand: { "@type": "Brand", name: "DEKMAR LTD" },
+        brand: { "@type": "Brand", name: "DEKMER SPACES LTD" },
         image: product.image,
         description: product.summary,
         category: product.category,
@@ -747,7 +747,7 @@ function bindEvents() {
     $(selector).addEventListener("submit", (event) => {
       event.preventDefault();
       event.currentTarget.reset();
-      showToast("Request captured for the DEKMAR LTD prototype.");
+      showToast("Request captured for the DEKMER SPACES LTD prototype.");
     });
   });
 
