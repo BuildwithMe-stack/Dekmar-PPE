@@ -2389,6 +2389,121 @@ p {
   grid-template-columns: repeat(4, 1fr);
 }
 
+.company-profile {
+  background:
+    linear-gradient(135deg, rgba(0, 153, 143, 0.06), transparent 36%),
+    var(--white);
+}
+
+.profile-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1.1fr) minmax(18rem, 0.9fr);
+  gap: 1.2rem;
+  align-items: stretch;
+}
+
+.profile-copy {
+  display: grid;
+  gap: 1rem;
+  align-content: center;
+}
+
+.profile-copy h2 {
+  max-width: 14ch;
+}
+
+.profile-copy > p {
+  max-width: 46rem;
+  font-size: 1.04rem;
+}
+
+.profile-stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.75rem;
+  margin-top: 0.5rem;
+}
+
+.profile-stats span,
+.profile-panel,
+.profile-card-grid article {
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--white);
+}
+
+.profile-stats span {
+  min-height: 6.4rem;
+  display: grid;
+  align-content: center;
+  gap: 0.25rem;
+  padding: 0.9rem;
+  color: var(--muted);
+}
+
+.profile-stats strong {
+  display: block;
+  color: var(--navy);
+  font-size: 1.05rem;
+  font-weight: 950;
+}
+
+.profile-panel {
+  padding: 1.35rem;
+  background:
+    linear-gradient(135deg, rgba(0, 153, 143, 0.12), rgba(255, 255, 255, 0) 42%),
+    var(--white);
+  box-shadow: var(--shadow-soft);
+}
+
+.profile-panel h3 {
+  color: var(--navy);
+  font-size: 1.2rem;
+  margin-bottom: 0.9rem;
+}
+
+.profile-panel ul {
+  display: grid;
+  gap: 0.7rem;
+  margin: 0;
+  padding-left: 1.15rem;
+  color: var(--text);
+}
+
+.profile-panel li::marker {
+  color: var(--teal);
+}
+
+.profile-card-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.profile-card-grid article {
+  min-height: 12rem;
+  padding: 1rem;
+  display: grid;
+  gap: 0.6rem;
+  align-content: start;
+}
+
+.profile-card-grid span {
+  color: var(--teal);
+  font-size: 0.78rem;
+  font-weight: 950;
+  text-transform: uppercase;
+}
+
+.profile-card-grid h3 {
+  color: var(--navy);
+}
+
+.profile-card-grid p {
+  color: var(--muted);
+}
+
 .hospital-cta {
   background:
     linear-gradient(135deg, rgba(0, 153, 143, 0.2), transparent 34%),
@@ -2427,6 +2542,7 @@ p {
 
 @media (max-width: 1100px) {
   .simple-hero-inner,
+  .profile-layout,
   .simple-product-detail .detail-hero {
     grid-template-columns: 1fr;
   }
@@ -2447,7 +2563,8 @@ p {
   .compact-category-grid,
   .department-grid,
   .steps-grid,
-  .simple-value-grid {
+  .simple-value-grid,
+  .profile-card-grid {
     grid-template-columns: repeat(2, 1fr);
   }
 }
@@ -2505,6 +2622,8 @@ p {
   .department-grid,
   .steps-grid,
   .simple-value-grid,
+  .profile-stats,
+  .profile-card-grid,
   .simple-footer-grid,
   .simple-detail-sections {
     grid-template-columns: 1fr;
